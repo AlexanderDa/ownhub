@@ -1,5 +1,5 @@
 import React from "https://dev.jspm.io/react@17.0.1";
-import Icon from "./components/icon.jsx";
+import AppLayout from "./layouts/app.layout.jsx";
 
 export default class Manager extends React.Component {
   /*****************************************************************
@@ -58,10 +58,6 @@ export default class Manager extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <Icon name="home" />
-      </div>
-    );
+    return <AppLayout />;
   }
 }
