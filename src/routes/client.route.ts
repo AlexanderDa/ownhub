@@ -3,6 +3,8 @@ import Client from "../controllers/client.controller.tsx";
 
 const router = new Router();
 
-router.get("/", Client.app);
+router.get("/", Client.index);
+router.get("/app/:path*", Client.app);
+router.get("/bundle.js", Client.bundleJS);
 
 export default router;

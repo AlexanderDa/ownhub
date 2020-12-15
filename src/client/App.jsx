@@ -1,15 +1,10 @@
 import React from "https://dev.jspm.io/react@17.0.1";
+import Manager from "./manager.jsx";
 
-const App = () => {
-  const [count, setCount] = React.useState(0);
-
+export default () => {
   return (
     <div>
-      <h1>Hello Deno Land!</h1>
-      <button onClick={() => setCount(count + 1)}>Click the 🦕</button>
-      <p>You clicked the 🦕 {count} times</p>
+      <Manager />
     </div>
   );
 };
-
-export default App;
