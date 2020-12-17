@@ -1,8 +1,8 @@
 import { RouterContext } from "https://deno.land/x/oak@v6.3.2/mod.ts";
 import * as ReactDOMServer from "https://esm.sh/react-dom@17.0.1/server";
 import React from "https://esm.sh/react@17.0.1";
-import App from "../client/App.jsx";
-import AppDeps from "../client/deps.jsx";
+import App from "../client/App.tsx";
+import ClientJS from "../client/client.tsx";
 
 export default {
   index: (ctx: RouterContext) => {
@@ -22,7 +22,7 @@ export default {
         <title>OwnHub</title>
       </head>
       <body>
-        <div id="root">${(ReactDOMServer as any).renderToString(<App />)}</div>
+        <div id="root">${ReactDOMServer.renderToString(<App />)}</div>
       </body>
     </html>
     `.replace(/\n|\r/g, "");
@@ -31,9 +31,9 @@ export default {
   bundleJS: (ctx: RouterContext) => {
     ctx.response.headers.set("content-type", "application/javascript");
     ctx.response.body = `
-    import React from "https://dev.jspm.io/react@17.0.1";
-    import ReactDOM from "https://dev.jspm.io/react-dom@17.0.1";
-   ${AppDeps}
+    import ReactDOM from "https://esm.sh/react-dom@17.0.1";
+    import React from "https://esm.sh/react@17.0.1";
+   ${ClientJS}
     ReactDOM.hydrate(React.createElement(App), document.getElementById("root"));
     `.replace(/\n|\r/g, "");
   },

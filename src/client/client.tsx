@@ -1,4 +1,4 @@
-import App from "./App.jsx";
+import App from "./App.tsx";
 
 export default `
 const App = ${App};
