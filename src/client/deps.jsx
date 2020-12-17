@@ -1,9 +1,10 @@
 import App from "./App.jsx";
 import Manager from "./manager.jsx";
-import AppLayout from './layouts/app.layout.jsx'
+import AppLayout from "./layouts/app.layout.jsx";
 import Breadcrumb from "./components/breadcrumb.jsx";
 import Header from "./components/header.jsx";
 import Icon from "./components/icon.jsx";
+
 
 export default `
 const App = ${App};
