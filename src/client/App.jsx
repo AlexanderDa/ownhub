@@ -1,10 +1,10 @@
-import React from "https://dev.jspm.io/react@17.0.1";
-import Manager from "./manager.jsx";
+import React from "https://esm.sh/react@17.0.1";
+
 
 export default () => {
   return (
     <div>
-      <Manager />
+      hola putos
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { RouterContext } from "https://deno.land/x/oak@v6.3.2/mod.ts";
-import ReactDOMServer from "https://dev.jspm.io/react-dom@17.0.1/server";
-import React from "https://dev.jspm.io/react@17.0.1";
+import * as ReactDOMServer from "https://esm.sh/react-dom@17.0.1/server";
+import React from "https://esm.sh/react@17.0.1";
 import App from "../client/App.jsx";
 import AppDeps from "../client/deps.jsx";
 
