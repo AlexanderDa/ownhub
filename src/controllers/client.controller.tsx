@@ -1,5 +1,5 @@
 import { RouterContext } from "https://deno.land/x/oak@v6.3.2/mod.ts";
-import {renderToString} from "https://esm.sh/react-dom@17.0.1/server";
+import { renderToString } from "https://esm.sh/react-dom@17.0.1/server";
 import React from "https://esm.sh/react@17.0.1";
 import App from "../client/App.tsx";
 import ClientJS from "../client/client.tsx";
@@ -16,7 +16,6 @@ export default {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <script type="module" src="/bundle.js"></script>
         <link rel="stylesheet" href="/styles.css">
         <title>OwnHub</title>
@@ -32,17 +31,59 @@ export default {
     ctx.response.headers.set("content-type", "application/javascript");
     ctx.response.body = `
     import ReactDOM from "https://esm.sh/react-dom@17.0.1";
-    import React from "https://esm.sh/react@17.0.1";
+    import React, { useState } from "https://esm.sh/react@17.0.1";
    ${ClientJS}
     ReactDOM.hydrate(React.createElement(App), document.getElementById("root"));
-    `.replace(/\s+/g, ' ').trim();
+
+    document.addEventListener("contextmenu", function(e){
+      e.preventDefault();
+    }, false);
+    `
+      .replace(/\s+/g, " ")
+      .trim();
   },
 
   style: (ctx: RouterContext) => {
     ctx.response.headers.set("content-type", "text/css");
     ctx.response.body = `
+  /****************************************************************
+  *                          Scrollbar                            *
+  ****************************************************************/
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e6e6e6;
+  }
+  ::-webkit-scrollbar-thumb:vertical:active {
+    background: #969696;
+  }
 
   /****************************************************************
+  *                          Selection                            *
+  ****************************************************************/
+  /* Disable selection */
+  body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Enable selecction */
+  .selectable {
+    -webkit-touch-callout: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+ /****************************************************************
   *                            Tooltip                            *
   ****************************************************************/
   [tooltip-text] {position: relative; z-index: 10;}
@@ -100,14 +141,14 @@ export default {
   }
   /* Scales from 0.5 to 1 -> grow effect */
   [tooltip-text]:hover:before {
-    transition-delay: 0.3s;
+    transition-delay: 1s;
     transform: translate(-50%, -5px) scale(1);
   }
   /* 
     Arrow slide down effect only on mouseenter (NOT on mouseleave)
   */
   [tooltip-text]:hover:after {
-    transition-delay: 0.5s; /* Starting after the grow effect */
+    transition-delay: 1.2s; /* Starting after the grow effect */
     transition-duration: 0.2s;
     transform: translateX(-50%) scaleY(1);
   }
@@ -187,7 +228,8 @@ export default {
     border-color: transparent transparent rgba(55, 64, 70, 0.9) transparent;
     transform-origin: bottom;
   }
-  `.replace(/\n/g, '').replace(/\s\s+/g, ' ');
-  
+  `
+      .replace(/\n/g, "")
+      .replace(/\s\s+/g, " ");
   },
 };

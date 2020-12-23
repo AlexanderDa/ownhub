@@ -1,7 +1,7 @@
 // Inspired at https://github.com/tabler/tabler-icons
 import React from "https://esm.sh/react@17.0.1";
 
-type IconName =
+export type IconName =
   | "calendar"
   | "close"
   | "delete"
@@ -16,7 +16,7 @@ type IconName =
   | "search"
   | "upload";
 
-interface Props extends React.HtmlHTMLAttributes<any> {
+interface Props extends Omit<React.HtmlHTMLAttributes<any>, "children"> {
   name: IconName;
   size?: number;
 }
