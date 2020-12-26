@@ -4,24 +4,18 @@ import { exists } from "https://deno.land/std@0.80.0/fs/exists.ts";
 import { getQuery } from "https://deno.land/x/oak@v6.3.2/helpers.ts";
 import { encodeUrl } from "https://deno.land/x/oak@v6.3.2/util.ts";
 import { contentType } from "https://deno.land/x/media_types@v2.5.2/mod.ts";
+import Entry from '../models/Entry.ts'
 
 interface PathInfo {
   absolute: string;
   relative: string;
 }
 
-interface EntryInfo {
-  name: string;
-  bytes: number;
-  size: string;
-  url?: string;
-  media?: string;
-}
 
 export default {
   list: async (ctx: RouterContext) => {
-    let folders: Array<EntryInfo> = [];
-    let files: Array<EntryInfo> = [];
+    let folders: Array<Entry> = [];
+    let files: Array<Entry> = [];
 
     const origin: string = ctx.request.url.origin;
     const { absolute, relative } = await extractPath(ctx, "query");

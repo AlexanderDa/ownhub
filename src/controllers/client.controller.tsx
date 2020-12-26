@@ -10,6 +10,13 @@ export default {
   },
 
   app: (ctx: RouterContext) => {
+    let app: string = "";
+    try {
+      app = renderToString(<App />);
+    } catch (error) {
+      console.error("rendering", error);
+    }
+
     ctx.response.body = `<!DOCTYPE html>
     <html lang="en">
       <head>
