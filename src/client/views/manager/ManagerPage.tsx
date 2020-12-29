@@ -1,4 +1,5 @@
 import React, { useState } from "https://esm.sh/react@17.0.1";
+import Viewer, { Views } from "../../components/Viewer.tsx";
 import Directory from "../../../models/Directory.ts";
 import TextField from "../../components/TextField.tsx";
 import Button from "../../components/Button.tsx";
@@ -21,6 +22,7 @@ export default (props: Props): JSX.Element => {
   const [showForm, setShowForm] = useState(false);
 
   const [formName, setFormName] = useState("");
+  const [view, setView] = useState<Views>("grid");
 
   const createFolderHandle = () => {
     props.createNewFolder(formName);
@@ -28,33 +30,6 @@ export default (props: Props): JSX.Element => {
   };
 
   const { search, directory } = props;
-
-  const folders = directory.folders.map((element) => (
-    <Box className="col-span-12 sm:col-span-6 md:col-span-3">
-      <Box className="flex flex-row bg-white shadow-sm rounded p-2">
-        <Box className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-blue-100 text-blue-500">
-          <Icon name="folder" />
-        </Box>
-        <Box className="flex flex-col flex-grow ml-4">
-          <Box className="text-sm text-gray-500">{element.name}</Box>
-          <Box className="font-bold textz-lg">{element.size}</Box>
-        </Box>
-      </Box>
-    </Box>
-  ));
-  const files = directory.files.map((element) => (
-    <Box className="col-span-12 sm:col-span-6 md:col-span-3">
-      <Box className="flex flex-row bg-white shadow-sm rounded p-2">
-        <Box className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-blue-100 text-blue-500">
-          <Icon name="file" />
-        </Box>
-        <Box className="flex flex-col flex-grow ml-4">
-          <Box className="text-sm text-gray-500">{element.name}</Box>
-          <Box className="font-bold textz-lg">{element.size}</Box>
-        </Box>
-      </Box>
-    </Box>
-  ));
 
   return (
     <Box className="flex h-screen overflow-y-hidden bg-white">
@@ -100,6 +75,12 @@ export default (props: Props): JSX.Element => {
                   tooltip-text="New Folder"
                   icon="folder-plus"
                 />
+                <Button
+                  tooltip-position="bottom"
+                  tooltip-text={view === "grid" ? "List view" : "Grid view"}
+                  icon={view === "grid" ? "layout-list" : "layout-grid"}
+                  onClick={() => setView(view === "grid" ? "list" : "grid")}
+                />
               </Box>
 
               <Button
@@ -112,38 +93,13 @@ export default (props: Props): JSX.Element => {
         </header>
 
         {/*<!-- Main content -->*/}
-        <main className="flex-1 bg-gray-50 max-h-full p-2 overflow-hidden overflow-y-scroll">
-          <table className="table-auto border-collapse w-full bg-white">
-            <thead>
-              <tr className="rounded-lg text-sm font-medium bg-gray-200 text-gray-700 text-left">
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Size</th>
-              </tr>
-            </thead>
-            <tbody className="text-sm font-normal text-gray-700">
-              {directory.folders.map((element) => (
-                <tr className="hover:bg-gray-100 border-b border-gray-200 py-4">
-                  <td className="px-4 py-4 flex items-center">
-                    <Icon
-                      name="folder"
-                      className="fill-current text-blue-500 mr-3"
-                    />
-                    <span>{element.name}</span>
-                  </td>
-                  <td className="px-4 py-4">{element.size}</td>
-                </tr>
-              ))}
-              {directory.files.map((element) => (
-                <tr className="hover:bg-gray-100 border-b border-gray-200 py-4">
-                  <td className="px-4 py-4 flex items-center">
-                    <Icon name="file" className="mr-3" />
-                    <span>{element.name}</span>
-                  </td>
-                  <td className="px-4 py-4">{element.size}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <main className="flex-1 bg-gray-50 max-h-full p-2 md:px-5 overflow-hidden overflow-y-scroll">
+          <Viewer
+            view={view}
+            search={search}
+            folders={directory.folders}
+            files={directory.files}
+          />
         </main>
       </Box>
 

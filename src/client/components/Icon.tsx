@@ -10,6 +10,8 @@ export type IconName =
   | "folder"
   | "folder-plus"
   | "home"
+  | "layout-grid"
+  | "layout-list"
   | "link"
   | "more"
   | "pencil"
@@ -98,6 +100,26 @@ export default (props: Props) => {
       <polyline points="5 12 3 12 12 3 21 12 19 12" />
       <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
       <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+    </React.Fragment>
+  );
+
+  icons.set(
+    "layout-grid",
+    <React.Fragment>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <rect x="4" y="4" width="6" height="6" rx="1" />
+      <rect x="14" y="4" width="6" height="6" rx="1" />
+      <rect x="4" y="14" width="6" height="6" rx="1" />
+      <rect x="14" y="14" width="6" height="6" rx="1" />
+    </React.Fragment>
+  );
+
+  icons.set(
+    "layout-list",
+    <React.Fragment>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <rect x="4" y="4" width="16" height="6" rx="2" />
+      <rect x="4" y="14" width="16" height="6" rx="2" />
     </React.Fragment>
   );
 

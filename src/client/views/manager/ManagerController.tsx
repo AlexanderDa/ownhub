@@ -6,12 +6,10 @@ interface Stage extends ManagerOptions {}
 export default class ManagerController extends React.Component<any, Stage> {
   public state: Stage = {
     search: "",
-    directory: { path: "/Downloads", folders: [], files: [] },
+    directory: { path: "/", folders: [], files: [] },
   };
 
-  search(value: any) {
-    console.log(value);
-  }
+ 
 
   createFolder(name: string) {
     alert(name);
@@ -39,15 +37,12 @@ export default class ManagerController extends React.Component<any, Stage> {
   render() {
     const { search, directory } = this.state;
     return (
-      <div>
-        {search}
-        <ManagerPage
-          search={search}
-          directory={directory}
-          onSearch={(value) => this.setState({ search: value })}
-          createNewFolder={this.createFolder}
-        />
-      </div>
+      <ManagerPage
+        search={search}
+        directory={directory}
+        onSearch={(value) => this.setState({ search: value })}
+        createNewFolder={this.createFolder}
+      />
     );
   }
 }
