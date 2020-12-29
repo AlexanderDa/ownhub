@@ -1,5 +1,6 @@
 import React, { useState } from "https://esm.sh/react@17.0.1";
 import Directory from "../../../models/Directory.ts";
+import TextField from "../../components/TextField.tsx";
 import Button from "../../components/Button.tsx";
 import Dialog from "../../components/Dialog.tsx";
 import Icon from "../../components/Icon.tsx";
@@ -12,14 +13,48 @@ export interface ManagerOptions {
 
 interface Props extends ManagerOptions {
   onSearch: (value: string) => void;
-  createNewFolder: (name: string) => void;
+  createNewFolder: (value: string) => void;
 }
 
-export default (props: Props) => {
+export default (props: Props): JSX.Element => {
   const [showSearchMobile, setShowSearchMobile] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const { search } = props;
+  const [formName, setFormName] = useState("");
+
+  const createFolderHandle = () => {
+    props.createNewFolder(formName);
+    setShowForm(false);
+  };
+
+  const { search, directory } = props;
+
+  const folders = directory.folders.map((element) => (
+    <Box className="col-span-12 sm:col-span-6 md:col-span-3">
+      <Box className="flex flex-row bg-white shadow-sm rounded p-2">
+        <Box className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-blue-100 text-blue-500">
+          <Icon name="folder" />
+        </Box>
+        <Box className="flex flex-col flex-grow ml-4">
+          <Box className="text-sm text-gray-500">{element.name}</Box>
+          <Box className="font-bold textz-lg">{element.size}</Box>
+        </Box>
+      </Box>
+    </Box>
+  ));
+  const files = directory.files.map((element) => (
+    <Box className="col-span-12 sm:col-span-6 md:col-span-3">
+      <Box className="flex flex-row bg-white shadow-sm rounded p-2">
+        <Box className="flex items-center justify-center flex-shrink-0 h-12 w-12 rounded-xl bg-blue-100 text-blue-500">
+          <Icon name="file" />
+        </Box>
+        <Box className="flex flex-col flex-grow ml-4">
+          <Box className="text-sm text-gray-500">{element.name}</Box>
+          <Box className="font-bold textz-lg">{element.size}</Box>
+        </Box>
+      </Box>
+    </Box>
+  ));
 
   return (
     <Box className="flex h-screen overflow-y-hidden bg-white">
@@ -77,9 +112,38 @@ export default (props: Props) => {
         </header>
 
         {/*<!-- Main content -->*/}
-        <main className="flex-1 bg-gray-50 max-h-full p-5 overflow-hidden overflow-y-scroll">
-          {/*<!-- Table see (https://tailwindui.com/components/application-ui/lists/tables) -->*/}
-          {JSON.stringify(props.directory)}
+        <main className="flex-1 bg-gray-50 max-h-full p-2 overflow-hidden overflow-y-scroll">
+          <table className="table-auto border-collapse w-full bg-white">
+            <thead>
+              <tr className="rounded-lg text-sm font-medium bg-gray-200 text-gray-700 text-left">
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Size</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm font-normal text-gray-700">
+              {directory.folders.map((element) => (
+                <tr className="hover:bg-gray-100 border-b border-gray-200 py-4">
+                  <td className="px-4 py-4 flex items-center">
+                    <Icon
+                      name="folder"
+                      className="fill-current text-blue-500 mr-3"
+                    />
+                    <span>{element.name}</span>
+                  </td>
+                  <td className="px-4 py-4">{element.size}</td>
+                </tr>
+              ))}
+              {directory.files.map((element) => (
+                <tr className="hover:bg-gray-100 border-b border-gray-200 py-4">
+                  <td className="px-4 py-4 flex items-center">
+                    <Icon name="file" className="mr-3" />
+                    <span>{element.name}</span>
+                  </td>
+                  <td className="px-4 py-4">{element.size}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </main>
       </Box>
 
@@ -108,74 +172,38 @@ export default (props: Props) => {
       {/* Form */}
 
       <Dialog show={showForm}>
-        <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <Box className="fixed z-10 inset-0 overflow-y-auto">
+          <Box className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen" />
 
-            <div
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="modal-headline"
-            >
-              <div className="justify-end bg-red-300">
-                <span>New Folder</span>
+            <Box className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <Box className="flex items-center justify-between bg-gray-50">
+                <span className="pl-2 text-lg text-gray-700">New Folder</span>
                 <Button icon="close" onClick={() => setShowForm(false)} />
-              </div>
+              </Box>
+              <Box className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <TextField
+                  label="Name"
+                  onChange={({ target }: any) => setFormName(target.value)}
+                />
+              </Box>
 
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                    <svg
-                      className="h-6 w-6 text-red-600"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
-                      id="modal-headline"
-                    >
-                      Deactivate account
-                    </h3>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Are you sure you want to deactivate your account? All of
-                        your data will be permanently removed. This action
-                        cannot be undone.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Crear
-                </button>
-                <button
-                  type="button"
+              <Box className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <Button
+                  text="Create"
+                  color="white"
+                  onClick={createFolderHandle}
+                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium  hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                />
+                <Button
+                  text="Cancel"
+                  onClick={() => setShowForm(false)}
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </Dialog>
     </Box>
   );

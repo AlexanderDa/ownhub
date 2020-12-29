@@ -1,8 +1,7 @@
 import React from "https://esm.sh/react@17.0.1";
 import Icon, { IconName } from "./Icon.tsx";
 
-interface Props
-  extends Omit<React.HtmlHTMLAttributes<any>, "children" | "className"> {
+interface Props extends Omit<React.HtmlHTMLAttributes<any>, "children"> {
   icon?: IconName;
   color?: string;
   text?: string;
@@ -15,7 +14,7 @@ export default (props: Props) => {
 
   return (
     <button
-      className={`mx-1 p-2 hover:bg-gray-100 rounded${
+      className={`mx-1 p-2 hover:bg-gray-100 text-base font-medium rounded${
         icon && !text ? "-full" : ""
       } focus:outline-none focus:ring`}
       {...props}

@@ -1,13 +1,14 @@
 import React from "https://esm.sh/react@17.0.1";
 import ManagerPage, { ManagerOptions } from "./ManagerPage.tsx";
 
-interface State extends ManagerOptions {}
+interface Stage extends ManagerOptions {}
 
-export default class ManagerController extends React.Component<any, State> {
-  public state: State = {
+export default class ManagerController extends React.Component<any, Stage> {
+  public state: Stage = {
     search: "",
-    directory: { path: "" },
+    directory: { path: "/Downloads", folders: [], files: [] },
   };
+
   search(value: any) {
     console.log(value);
   }
@@ -33,7 +34,7 @@ export default class ManagerController extends React.Component<any, State> {
    *                             React                             *
    *****************************************************************/
   public componentDidMount(): void {
-    this.loadDirectory("/");
+    this.loadDirectory(this.state.directory.path);
   }
   render() {
     const { search, directory } = this.state;
