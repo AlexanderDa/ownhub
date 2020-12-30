@@ -2,6 +2,7 @@ import React, { useState } from "https://esm.sh/react@17.0.1";
 import Viewer, { Views } from "../../components/Viewer.tsx";
 import Directory from "../../../models/Directory.ts";
 import TextField from "../../components/TextField.tsx";
+import Breadcrumb from "../../components/Breadcrumb.tsx";
 import Button from "../../components/Button.tsx";
 import Dialog from "../../components/Dialog.tsx";
 import Icon from "../../components/Icon.tsx";
@@ -91,6 +92,7 @@ export default (props: Props): JSX.Element => {
               />
             </Box>
           </Box>
+          <Breadcrumb path={directory.path} />
         </header>
 
         {/*<!-- Main content -->*/}
