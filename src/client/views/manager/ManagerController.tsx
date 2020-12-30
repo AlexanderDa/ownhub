@@ -9,7 +9,10 @@ export default class ManagerController extends React.Component<any, Stage> {
     directory: { path: "/", folders: [], files: [] },
   };
 
- 
+  constructor(props: any) {
+    super(props);
+    this.loadDirectory = this.loadDirectory.bind(this);
+  }
 
   createFolder(name: string) {
     alert(name);
@@ -21,7 +24,7 @@ export default class ManagerController extends React.Component<any, Stage> {
     await fetch(`/api/directory?query=${JSON.stringify({ path })}`)
       .then((res) => res.json())
       .then((directory) => {
-        this.setState({ directory });
+        this.setState({ directory, search: "" });
       })
       .catch((err) => {
         console.error(err);
@@ -32,7 +35,13 @@ export default class ManagerController extends React.Component<any, Stage> {
    *                             React                             *
    *****************************************************************/
   public componentDidMount(): void {
-    this.loadDirectory(this.state.directory.path);
+    //@ts-ignore
+    this.loadDirectory(window.location.pathname.replace("/app", "") || "/");
+
+    window.addEventListener("popstate", () => {
+      //@ts-ignore
+      this.loadDirectory(window.location.pathname.replace("/app", "") || "/");
+    });
   }
   render() {
     const { search, directory } = this.state;
@@ -41,6 +50,7 @@ export default class ManagerController extends React.Component<any, Stage> {
         search={search}
         directory={directory}
         onSearch={(value) => this.setState({ search: value })}
+        onChangePath={this.loadDirectory}
         createNewFolder={this.createFolder}
       />
     );

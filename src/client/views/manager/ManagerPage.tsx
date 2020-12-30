@@ -14,6 +14,7 @@ export interface ManagerOptions {
 
 interface Props extends ManagerOptions {
   onSearch: (value: string) => void;
+  onChangePath: (path: string) => void;
   createNewFolder: (value: string) => void;
 }
 
@@ -97,8 +98,8 @@ export default (props: Props): JSX.Element => {
           <Viewer
             view={view}
             search={search}
-            folders={directory.folders}
-            files={directory.files}
+            directory={directory}
+            onChangePath={props.onChangePath}
           />
         </main>
       </Box>

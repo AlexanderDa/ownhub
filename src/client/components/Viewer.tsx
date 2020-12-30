@@ -1,22 +1,23 @@
 import React from "https://esm.sh/react@17.0.1";
-import Entry from "../../models/Entry.ts";
+import Directory from "../../models/Directory.ts";
 import Icon from "./Icon.tsx";
 
 export type Views = "grid" | "list";
 
 interface Props {
-  search?: string;
-  files: Array<Entry>;
-  folders: Array<Entry>;
   view?: Views;
+  search?: string;
+  directory: Directory;
+  onChangePath: (path: string) => void;
 }
 
 export default (props: Props): JSX.Element => {
+  let { path, folders, files } = props.directory;
   const { search, view } = props;
-  let { folders, files } = props;
 
   const isEmpty = folders.length + files.length === 0;
 
+  // filter folders and files
   if (search !== "" && search !== undefined) {
     files = files.filter((file) => {
       return file.name.toLowerCase().indexOf(`${search}`.toLowerCase()) > -1;
@@ -25,6 +26,13 @@ export default (props: Props): JSX.Element => {
       return folder.name.toLowerCase().indexOf(`${search}`.toLowerCase()) > -1;
     });
   }
+
+  const handleFolder = (folder: string) => {
+    const address: string = `${path === "/" ? "" : path}/${folder}`;
+    //@ts-ignore
+    window.history.pushState({ dir: address }, address, `/app${address}`);
+    props.onChangePath(address);
+  };
 
   const Table = (): JSX.Element => (
     <table className="table-auto border-collapse w-full bg-white">
@@ -37,11 +45,16 @@ export default (props: Props): JSX.Element => {
       <tbody className="text-sm font-normal text-gray-700">
         {folders.map((element) => (
           <tr className="hover:bg-gray-100 border-b border-gray-200 py-4">
-            <td className="px-4 py-1 flex items-center">
-              <div className="flex items-center justify-center flex-shrink-0 h-10 w-10 rounded-xl bg-blue-100 text-blue-500">
-                <Icon name="folder" className="fill-current text-blue-500" />
-              </div>
-              <span className="ml-3">{element.name}</span>
+            <td>
+              <a
+                className="px-4 py-1 flex items-center"
+                onClick={() => handleFolder(element.name)}
+              >
+                <div className="flex items-center justify-center flex-shrink-0 h-10 w-10 rounded-xl bg-blue-100 text-blue-500">
+                  <Icon name="folder" className="fill-current text-blue-500" />
+                </div>
+                <span className="ml-3">{element.name}</span>
+              </a>
             </td>
             <td className="px-4 py-4">{element.size}</td>
           </tr>
@@ -64,7 +77,10 @@ export default (props: Props): JSX.Element => {
   const Grid = (): JSX.Element => (
     <div className="grid grid-cols-12 gap-4">
       {folders.map((element) => (
-        <div className="col-span-12 sm:col-span-6 md:col-span-4">
+        <a
+          className="col-span-12 sm:col-span-6 md:col-span-4"
+          onClick={() => handleFolder(element.name)}
+        >
           <div className="flex flex-row bg-white shadow-sm rounded p-2">
             <div className="flex items-center justify-center flex-shrink-0 h-10 w-10 rounded-xl bg-blue-100 text-blue-500">
               <Icon name="folder" className="fill-current text-blue-500" />
@@ -83,7 +99,7 @@ export default (props: Props): JSX.Element => {
               </div>
             </div>
           </div>
-        </div>
+        </a>
       ))}
       {files.map((element) => (
         <div className="col-span-12 sm:col-span-6 md:col-span-4">
