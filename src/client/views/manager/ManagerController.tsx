@@ -6,6 +6,7 @@ interface Stage extends ManagerOptions {}
 export default class ManagerController extends React.Component<any, Stage> {
   public state: Stage = {
     search: "",
+    loading: false,
     directory: { path: "/", folders: [], files: [] },
   };
 
@@ -21,6 +22,7 @@ export default class ManagerController extends React.Component<any, Stage> {
    *                           Services                            *
    *****************************************************************/
   async loadDirectory(path: string): Promise<void> {
+    this.setState({ loading: true });
     await fetch(`/api/directory?query=${JSON.stringify({ path })}`)
       .then((res) => res.json())
       .then((directory) => {
@@ -28,6 +30,9 @@ export default class ManagerController extends React.Component<any, Stage> {
       })
       .catch((err) => {
         console.error(err);
+      })
+      .finally(() => {
+        this.setState({ loading: false });
       });
   }
 
@@ -44,10 +49,11 @@ export default class ManagerController extends React.Component<any, Stage> {
     });
   }
   render() {
-    const { search, directory } = this.state;
+    const { directory, search, loading } = this.state;
     return (
       <ManagerPage
         search={search}
+        loading={loading}
         directory={directory}
         onSearch={(value) => this.setState({ search: value })}
         onChangePath={this.loadDirectory}

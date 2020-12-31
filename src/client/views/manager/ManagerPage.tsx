@@ -10,6 +10,7 @@ import Box from "../../components/Box.tsx";
 
 export interface ManagerOptions {
   search: string;
+  loading: boolean;
   directory: Directory;
 }
 
@@ -31,7 +32,7 @@ export default (props: Props): JSX.Element => {
     setShowForm(false);
   };
 
-  const { search, directory } = props;
+  const { search, directory, loading } = props;
 
   return (
     <Box className="flex h-screen overflow-y-hidden bg-white">
@@ -92,7 +93,7 @@ export default (props: Props): JSX.Element => {
               />
             </Box>
           </Box>
-          <Breadcrumb path={directory.path} onChangePath={props.onChangePath}/>
+          <Breadcrumb path={directory.path} onChangePath={props.onChangePath} />
         </header>
 
         {/*<!-- Main content -->*/}
@@ -100,6 +101,7 @@ export default (props: Props): JSX.Element => {
           <Viewer
             view={view}
             search={search}
+            loading={loading}
             directory={directory}
             onChangePath={props.onChangePath}
           />
