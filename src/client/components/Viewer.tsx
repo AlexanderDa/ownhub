@@ -48,7 +48,7 @@ export default (props: Props): JSX.Element => {
             <td>
               <a
                 className="px-4 py-1 flex items-center"
-                onClick={() => handleFolder(element.name)}
+                onDoubleClick={() => handleFolder(element.name)}
               >
                 <div className="flex items-center justify-center flex-shrink-0 h-10 w-10 rounded-xl bg-blue-100 text-blue-500">
                   <Icon name="folder" className="fill-current text-blue-500" />
@@ -79,7 +79,7 @@ export default (props: Props): JSX.Element => {
       {folders.map((element) => (
         <a
           className="col-span-12 sm:col-span-6 md:col-span-4"
-          onClick={() => handleFolder(element.name)}
+          onDoubleClick={() => handleFolder(element.name)}
         >
           <div className="flex flex-row bg-white shadow-sm rounded p-2">
             <div className="flex items-center justify-center flex-shrink-0 h-10 w-10 rounded-xl bg-blue-100 text-blue-500">

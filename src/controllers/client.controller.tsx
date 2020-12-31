@@ -90,6 +90,28 @@ export default {
     user-select: text;
   }
 
+  /****************************************************************
+  *                         Breadcrumb                            *
+  ****************************************************************/
+
+  .breadcrumb-wrap {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    flex: 0 auto;
+    flex-shrink: 1000;
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    position: relative;
+    transition: transform ease-in-out 0.3s;
+  }
+
+  .breadcrumb-wrap:hover  {
+    flex: 1 0 auto;
+    transition: transform ease-in-out 0.3s;
+  }
+
  /****************************************************************
   *                            Tooltip                            *
   ****************************************************************/

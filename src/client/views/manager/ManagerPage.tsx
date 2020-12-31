@@ -92,7 +92,7 @@ export default (props: Props): JSX.Element => {
               />
             </Box>
           </Box>
-          <Breadcrumb path={directory.path} />
+          <Breadcrumb path={directory.path} onChangePath={props.onChangePath}/>
         </header>
 
         {/*<!-- Main content -->*/}
