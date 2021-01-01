@@ -2,6 +2,7 @@ import { Application as App } from "https://deno.land/x/oak@v6.3.2/mod.ts";
 import { existsSync } from "https://deno.land/std@0.80.0/fs/exists.ts";
 import { send } from "https://deno.land/x/oak@v6.3.2/mod.ts";
 import DirectoryRoure from "./routes/directory.route.ts";
+import StorageRoure from "./routes/storage.route.ts";
 import ClientRoure from "./routes/client.route.ts";
 
 export default class Application extends App {
@@ -28,6 +29,9 @@ export default class Application extends App {
 
     this.use(DirectoryRoure.routes());
     this.use(DirectoryRoure.allowedMethods());
+
+    this.use(StorageRoure.routes());
+    this.use(StorageRoure.allowedMethods());
 
     this.use(async (ctx) => {
       const path: string = ctx.request.headers.get("Home-Path") || "";
