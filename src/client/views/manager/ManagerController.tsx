@@ -7,17 +7,17 @@ export default class ManagerController extends React.Component<any, Stage> {
   public state: Stage = {
     search: "",
     loading: false,
-    directory: { path: "/", folders: [], files: [] },
+    path: "/",
+    folders: [],
+    files: [],
   };
 
   constructor(props: any) {
     super(props);
+    this.createFolder = this.createFolder.bind(this);
     this.loadDirectory = this.loadDirectory.bind(this);
   }
 
-  createFolder(name: string) {
-    alert(name);
-  }
   /*****************************************************************
    *                           Services                            *
    *****************************************************************/
@@ -25,14 +25,27 @@ export default class ManagerController extends React.Component<any, Stage> {
     this.setState({ loading: true });
     await fetch(`/api/directory?query=${JSON.stringify({ path })}`)
       .then((res) => res.json())
-      .then((directory) => {
-        this.setState({ directory, search: "" });
+      .then(({ path, files, folders }) => {
+        this.setState({ path, files, folders, search: "" });
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
         this.setState({ loading: false });
+      });
+  }
+
+  createFolder(name: string) {
+    const path = `${this.state.path}/${name}`;
+    fetch("/api/directory", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ path }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState((state) => ({ folders: [...state.folders, data] }));
       });
   }
 
@@ -49,12 +62,14 @@ export default class ManagerController extends React.Component<any, Stage> {
     });
   }
   render() {
-    const { directory, search, loading } = this.state;
+    const { path, files, folders, search, loading } = this.state;
     return (
       <ManagerPage
         search={search}
         loading={loading}
-        directory={directory}
+        path={path}
+        files={files}
+        folders={folders}
         onSearch={(value) => this.setState({ search: value })}
         onChangePath={this.loadDirectory}
         createNewFolder={this.createFolder}
