@@ -1,7 +1,11 @@
 import { MultipartReader } from "https://deno.land/std@0.82.0/mime/multipart.ts";
 import { RouterContext } from "https://deno.land/x/oak/mod.ts";
 
-export function uploader() {
+
+/**
+ * Middleware to upload files.
+ */
+export function uploader(): (ctx: any, next: Function) => Promise<void> {
   return async (ctx: RouterContext, next: Function) => {
     ctx.params.path = ctx.params.path ? `/${ctx.params.path}` : "/";
 
@@ -17,11 +21,16 @@ export function uploader() {
     );
 
     const form = await mr.readForm(0);
+    const entries = Array.from(form.entries());
 
-    Object.assign(ctx, {
-      files: Array.from(form.entries()),
-    });
+    //Validation
+    if (entries.length > 1 || entries[0][0] !== "files") {
+      await form.removeAll();
+      ctx.throw(422, "Invalid upload data.");
+    }
 
-    next();
+    Object.assign(ctx, { files: entries[0][1] });
+
+    await next();
   };
 }
