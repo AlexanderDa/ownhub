@@ -1,14 +1,11 @@
 import { MultipartReader } from "https://deno.land/std@0.82.0/mime/multipart.ts";
 import { RouterContext } from "https://deno.land/x/oak/mod.ts";
 
-
 /**
  * Middleware to upload files.
  */
 export function uploader(): (ctx: any, next: Function) => Promise<void> {
   return async (ctx: RouterContext, next: Function) => {
-    ctx.params.path = ctx.params.path ? `/${ctx.params.path}` : "/";
-
     const boundaryRegex = /^multipart\/form-data;\sboundary=(?<boundary>.*)$/;
     const match = ctx.request.headers.get("content-type")!.match(boundaryRegex);
     if (!match) ctx.throw(422, "Invalid upload data.");

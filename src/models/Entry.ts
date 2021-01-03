@@ -1,4 +1,4 @@
-export default interface EntryInfo {
+export default interface Entry {
     name: string;
     bytes: number;
     size: string;
