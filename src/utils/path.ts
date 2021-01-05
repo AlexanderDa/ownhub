@@ -71,7 +71,7 @@ export async function entryInfo(path: string, url?: string) {
   return entry;
 }
 
-function byteToString(bytes: number): string {
+export function byteToString(bytes: number): string {
   if (bytes === 0) return "0 Bytes";
   const k = 1024,
     sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],

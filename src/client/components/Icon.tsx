@@ -4,6 +4,8 @@ import React from "https://esm.sh/react@17.0.1";
 export type IconName =
   | "calendar"
   | "close"
+  | "cloud"
+  | "cloud-upload"
   | "delete"
   | "download"
   | "file"
@@ -12,6 +14,8 @@ export type IconName =
   | "home"
   | "layout-grid"
   | "layout-list"
+  | "maximize"
+  | "minimize"
   | "link"
   | "more"
   | "pencil"
@@ -45,6 +49,24 @@ export default (props: Props) => {
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <line x1="18" y1="6" x2="6" y2="18" />
       <line x1="6" y1="6" x2="18" y2="18" />
+    </React.Fragment>
+  );
+
+  icons.set(
+    "cloud",
+    <React.Fragment>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-12" />
+    </React.Fragment>
+  );
+
+  icons.set(
+    "cloud-upload",
+    <React.Fragment>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1" />
+      <polyline points="9 15 12 12 15 15" />
+      <line x1="12" y1="12" x2="12" y2="21" />
     </React.Fragment>
   );
 
@@ -120,6 +142,29 @@ export default (props: Props) => {
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <rect x="4" y="4" width="16" height="6" rx="2" />
       <rect x="4" y="14" width="16" height="6" rx="2" />
+    </React.Fragment>
+  );
+
+  icons.set(
+    "maximize",
+    <React.Fragment>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M4 8v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M4 16v2a2 2 0 0 0 2 2h2" />
+      <path d="M16 4h2a2 2 0 0 1 2 2v2" />
+      <path d="M16 20h2a2 2 0 0 0 2 -2v-2" />
+    </React.Fragment>
+  );
+
+  icons.set(
+    "minimize",
+    <React.Fragment>
+      {" "}
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 19v-2a2 2 0 0 1 2 -2h2" />
+      <path d="M15 5v2a2 2 0 0 0 2 2h2" />
+      <path d="M5 15h2a2 2 0 0 1 2 2v2" />
+      <path d="M5 9h2a2 2 0 0 0 2 -2v-2" />{" "}
     </React.Fragment>
   );
 

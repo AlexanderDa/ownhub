@@ -14,6 +14,7 @@ export default class ManagerController extends React.Component<any, Stage> {
 
   constructor(props: any) {
     super(props);
+    this.upload = this.upload.bind(this);
     this.createFolder = this.createFolder.bind(this);
     this.loadDirectory = this.loadDirectory.bind(this);
   }
@@ -49,6 +50,9 @@ export default class ManagerController extends React.Component<any, Stage> {
       });
   }
 
+  upload(files: any) {
+    console.log(files);
+  }
   /*****************************************************************
    *                             React                             *
    *****************************************************************/
@@ -72,6 +76,7 @@ export default class ManagerController extends React.Component<any, Stage> {
         folders={folders}
         onSearch={(value) => this.setState({ search: value })}
         onChangePath={this.loadDirectory}
+        onUpload={this.upload}
         createNewFolder={this.createFolder}
       />
     );

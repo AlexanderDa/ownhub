@@ -3,6 +3,7 @@ import Viewer, { Views } from "../../components/Viewer.tsx";
 import Directory from "../../../models/Directory.ts";
 import TextField from "../../components/TextField.tsx";
 import Breadcrumb from "../../components/Breadcrumb.tsx";
+import Uploader from "../../components/Uploader.tsx";
 import Button from "../../components/Button.tsx";
 import Dialog from "../../components/Dialog.tsx";
 import Icon from "../../components/Icon.tsx";
@@ -16,11 +17,13 @@ export interface ManagerOptions extends Directory {
 interface Props extends ManagerOptions {
   onSearch: (value: string) => void;
   onChangePath: (path: string) => void;
+  onUpload: (files: File) => void;
   createNewFolder: (value: string) => void;
 }
 
 export default (props: Props): JSX.Element => {
   const [showSearchMobile, setShowSearchMobile] = useState(false);
+  const [showUploader, setShowUploader] = useState(true);
   const [showForm, setShowForm] = useState(false);
 
   const [formName, setFormName] = useState("");
@@ -29,6 +32,10 @@ export default (props: Props): JSX.Element => {
   const createFolderHandle = () => {
     props.createNewFolder(formName);
     setShowForm(false);
+  };
+
+  const selectedFiles = (files: any) => {
+    props.onUpload(files);
   };
 
   const { search, path, folders, files, loading } = props;
@@ -67,10 +74,12 @@ export default (props: Props): JSX.Element => {
 
               <Box className="hidden sm:flex">
                 <Button
+                  onClick={() => setShowUploader(true)}
                   tooltip-position="bottom"
                   tooltip-text="Upload"
-                  icon="upload"
+                  icon="cloud-upload"
                 />
+
                 <Button
                   onClick={() => setShowForm(true)}
                   tooltip-position="bottom"
@@ -165,6 +174,8 @@ export default (props: Props): JSX.Element => {
           </Box>
         </Box>
       </Dialog>
+
+      <Uploader show={showUploader} />
     </Box>
   );
 };
