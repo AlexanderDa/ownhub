@@ -1,4 +1,5 @@
 import React from "https://esm.sh/react@17.0.1";
+import Entry from "../../../models/Entry.ts";
 import ManagerPage, { ManagerOptions } from "./ManagerPage.tsx";
 
 interface Stage extends ManagerOptions {}
@@ -14,7 +15,7 @@ export default class ManagerController extends React.Component<any, Stage> {
 
   constructor(props: any) {
     super(props);
-    this.upload = this.upload.bind(this);
+    this.uploaded = this.uploaded.bind(this);
     this.createFolder = this.createFolder.bind(this);
     this.loadDirectory = this.loadDirectory.bind(this);
   }
@@ -50,9 +51,11 @@ export default class ManagerController extends React.Component<any, Stage> {
       });
   }
 
-  upload(files: any) {
-    console.log(files);
+  uploaded(path: string, entry: Entry) {
+    if (path === this.state.path)
+      this.setState((state) => ({ files: [...state.files, entry] }));
   }
+
   /*****************************************************************
    *                             React                             *
    *****************************************************************/
@@ -76,7 +79,7 @@ export default class ManagerController extends React.Component<any, Stage> {
         folders={folders}
         onSearch={(value) => this.setState({ search: value })}
         onChangePath={this.loadDirectory}
-        onUpload={this.upload}
+        onUpload={this.uploaded}
         createNewFolder={this.createFolder}
       />
     );

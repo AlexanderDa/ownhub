@@ -3,11 +3,12 @@ import Viewer, { Views } from "../../components/Viewer.tsx";
 import Directory from "../../../models/Directory.ts";
 import TextField from "../../components/TextField.tsx";
 import Breadcrumb from "../../components/Breadcrumb.tsx";
-import Uploader from "../../components/Uploader.tsx";
+import UploadPanel from "../../components/UploadPanel.tsx";
 import Button from "../../components/Button.tsx";
 import Dialog from "../../components/Dialog.tsx";
 import Icon from "../../components/Icon.tsx";
 import Box from "../../components/Box.tsx";
+import Entry from "../../../models/Entry.ts";
 
 export interface ManagerOptions extends Directory {
   search: string;
@@ -17,13 +18,13 @@ export interface ManagerOptions extends Directory {
 interface Props extends ManagerOptions {
   onSearch: (value: string) => void;
   onChangePath: (path: string) => void;
-  onUpload: (files: File) => void;
+  onUpload: (path: string, entry: Entry) => void;
   createNewFolder: (value: string) => void;
 }
 
 export default (props: Props): JSX.Element => {
   const [showSearchMobile, setShowSearchMobile] = useState(false);
-  const [showUploader, setShowUploader] = useState(true);
+  const [showUploadPanel, setShowUploadPanel] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
   const [formName, setFormName] = useState("");
@@ -34,11 +35,8 @@ export default (props: Props): JSX.Element => {
     setShowForm(false);
   };
 
-  const selectedFiles = (files: any) => {
-    props.onUpload(files);
-  };
-
   const { search, path, folders, files, loading } = props;
+  const { onUpload, onSearch, onChangePath } = props;
 
   return (
     <Box className="flex h-screen overflow-y-hidden bg-white">
@@ -58,7 +56,7 @@ export default (props: Props): JSX.Element => {
                 type="search"
                 placeholder="Search"
                 value={search}
-                onChange={({ target }: any) => props.onSearch(target.value)}
+                onChange={({ target }: any) => onSearch(target.value)}
                 className="px-4 py-3 rounded-md bg-gray-100 lg:max-w-sm md:py-2 md:flex-1 focus:outline-none md:focus:bg-gray-100 md:focus:shadow md:focus:border"
               />
             </Box>
@@ -74,7 +72,7 @@ export default (props: Props): JSX.Element => {
 
               <Box className="hidden sm:flex">
                 <Button
-                  onClick={() => setShowUploader(true)}
+                  onClick={() => setShowUploadPanel(true)}
                   tooltip-position="bottom"
                   tooltip-text="Upload"
                   icon="cloud-upload"
@@ -101,17 +99,20 @@ export default (props: Props): JSX.Element => {
               />
             </Box>
           </Box>
-          <Breadcrumb path={path} onChangePath={props.onChangePath} />
+          <Breadcrumb path={path} onChangePath={onChangePath} />
         </header>
 
         {/*<!-- Main content -->*/}
-        <main className="flex-1 bg-gray-50 max-h-full p-2 md:px-5 overflow-hidden overflow-y-scroll">
+        <main
+          className="flex-1 bg-gray-50 max-h-full p-2 md:px-5 overflow-hidden overflow-y-scroll"
+          onDragEnter={() => setShowUploadPanel(true)}
+        >
           <Viewer
             view={view}
             search={search}
             loading={loading}
             directory={{ path, files, folders }}
-            onChangePath={props.onChangePath}
+            onChangePath={onChangePath}
           />
         </main>
       </Box>
@@ -129,7 +130,7 @@ export default (props: Props): JSX.Element => {
             <input
               type="text"
               placeholder="Search"
-              onChange={({ target }: any) => props.onSearch(target.value)}
+              onChange={({ target }: any) => onSearch(target.value)}
               value={search}
               className="w-full px-4 py-3 text-gray-600 rounded-md focus:bg-gray-100 focus:outline-none"
             />
@@ -175,7 +176,11 @@ export default (props: Props): JSX.Element => {
         </Box>
       </Dialog>
 
-      <Uploader show={showUploader} />
+      <UploadPanel
+        show={showUploadPanel}
+        onUpload={onUpload}
+        onClose={() => setShowUploadPanel(false)}
+      />
     </Box>
   );
 };

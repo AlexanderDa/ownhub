@@ -38,8 +38,15 @@ export default {
     ctx.response.headers.set("content-type", "application/javascript");
     ctx.response.body = `
     import ReactDOM from "https://esm.sh/react-dom@17.0.1";
-    import React, { useState } from "https://esm.sh/react@17.0.1";
+    import React from "https://esm.sh/react@17.0.1";
+    import { useEffect } from "https://esm.sh/react@17.0.1";
+    import { useState } from "https://esm.sh/react@17.0.1";
+    import { useRef } from "https://esm.sh/react@17.0.1";
+    
+    import axios from "https://esm.sh/axios@0.21.1";
+
    ${ClientJS}
+   
     ReactDOM.hydrate(React.createElement(App), document.getElementById("root"));
 
     document.addEventListener("contextmenu", function(e){
