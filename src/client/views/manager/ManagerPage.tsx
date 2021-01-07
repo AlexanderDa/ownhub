@@ -8,6 +8,7 @@ import Button from "../../components/Button.tsx";
 import Dialog from "../../components/Dialog.tsx";
 import Icon from "../../components/Icon.tsx";
 import Box from "../../components/Box.tsx";
+import Fab from "../../components/Fab.tsx";
 import Entry from "../../../models/Entry.ts";
 
 export interface ManagerOptions extends Directory {
@@ -58,6 +59,35 @@ export default (props: Props): JSX.Element => {
                 value={search}
                 onChange={({ target }: any) => onSearch(target.value)}
                 className="px-4 py-3 rounded-md bg-gray-100 lg:max-w-sm md:py-2 md:flex-1 focus:outline-none md:focus:bg-gray-100 md:focus:shadow md:focus:border"
+              />
+            </Box>
+
+            {/* Mobile search box */}
+
+            <Box
+              className={
+                !showSearchMobile
+                  ? "hidden"
+                  : "absolute z-20 inset-x-0 flex items-center justify-between p-1 bg-white shadow-md"
+              }
+            >
+              <Box className="flex items-center flex-1 px-2 space-x-2">
+                <Icon name="search" className="text-gray-500" />
+
+                <input
+                  type="text"
+                  placeholder="Search"
+                  onChange={({ target }: any) => onSearch(target.value)}
+                  value={search}
+                  className="w-full px-4 py-3 text-gray-600 rounded-md focus:bg-gray-100 focus:outline-none"
+                />
+              </Box>
+              <Button
+                icon="close"
+                onClick={() => {
+                  onSearch("");
+                  setShowSearchMobile(false);
+                }}
               />
             </Box>
 
@@ -121,24 +151,6 @@ export default (props: Props): JSX.Element => {
        *                              Dialogs                              *
        ********************************************************************/}
 
-      {/* Mobile search box */}
-      <Dialog show={showSearchMobile}>
-        <Box className="absolute inset-x-0 flex items-center justify-between p-2 bg-white shadow-md">
-          <Box className="flex items-center flex-1 px-2 space-x-2">
-            <Icon name="search" className="text-gray-500" />
-
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={({ target }: any) => onSearch(target.value)}
-              value={search}
-              className="w-full px-4 py-3 text-gray-600 rounded-md focus:bg-gray-100 focus:outline-none"
-            />
-          </Box>
-          <Button icon="close" onClick={() => setShowSearchMobile(false)} />
-        </Box>
-      </Dialog>
-
       {/* Form */}
 
       <Dialog show={showForm}>
@@ -180,6 +192,12 @@ export default (props: Props): JSX.Element => {
         show={showUploadPanel}
         onUpload={onUpload}
         onClose={() => setShowUploadPanel(false)}
+      />
+
+      <Fab
+        bottomSpace={showUploadPanel}
+        onFolderPlus={() => setShowForm(true)}
+        onUpload={() => setShowUploadPanel(true)}
       />
     </Box>
   );

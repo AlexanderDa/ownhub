@@ -45,8 +45,8 @@ export default (props: Props) => {
     <div
       className={
         maximized
-          ? "fixed inset-0 z-10"
-          : "fixed z-10 h-auto w-full right-0 bottom-0 md:w-96 md:right-3 md:bottom-3"
+          ? "fixed inset-0 z-20"
+          : "fixed z-20 h-auto w-full right-0 bottom-0 md:w-96 md:right-3 md:bottom-3"
       }
     >
       <div className="bg-gray-200 shadow rounded overflow-hidden h-full border-2">
