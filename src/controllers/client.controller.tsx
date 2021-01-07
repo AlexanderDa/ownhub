@@ -1,8 +1,7 @@
 import { RouterContext } from "https://deno.land/x/oak@v6.3.2/mod.ts";
 import { renderToString } from "https://esm.sh/react-dom@17.0.1/server";
 import React from "https://esm.sh/react@17.0.1";
-import App from "../client/App.tsx";
-import ClientJS from "../client/client.tsx";
+import App, { BundleJS } from "../client/App.tsx";
 
 export default {
   index: (ctx: RouterContext) => {
@@ -10,13 +9,6 @@ export default {
   },
 
   app: (ctx: RouterContext) => {
-    let app: string = "";
-    try {
-      app = renderToString(<App />);
-    } catch (error) {
-      console.error("rendering", error);
-    }
-
     ctx.response.body = `<!DOCTYPE html>
     <html lang="en">
       <head>
@@ -45,7 +37,7 @@ export default {
     
     import axios from "https://esm.sh/axios@0.21.1";
 
-   ${ClientJS}
+   ${BundleJS}
    
     ReactDOM.hydrate(React.createElement(App), document.getElementById("root"));
 

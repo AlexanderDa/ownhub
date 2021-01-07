@@ -1,5 +1,6 @@
 import React from "https://esm.sh/react@17.0.1";
 import Directory from "../../models/Directory.ts";
+import { recordHistory } from "../utils/browser.ts";
 import Icon from "./Icon.tsx";
 
 export type Views = "grid" | "list";
@@ -30,8 +31,7 @@ export default (props: Props): JSX.Element => {
 
   const handleFolder = (folder: string) => {
     const address: string = `${path === "/" ? "" : path}/${folder}`;
-    //@ts-ignore
-    window.history.pushState({ dir: address }, address, `/app${address}`);
+    recordHistory(address);
     props.onChangePath(address);
   };
 

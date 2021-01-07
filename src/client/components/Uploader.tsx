@@ -1,8 +1,9 @@
 import React from "https://esm.sh/react@17.0.1";
-import Button from "./Button.tsx";
+import { pathFromBrowser } from "../utils/browser.ts";
 import { byteToString } from "../../utils/path.ts";
 import axios from "https://esm.sh/axios@0.21.1";
 import Entry from "../../models/Entry.ts";
+import Button from "./Button.tsx";
 import Icon from "./Icon.tsx";
 
 interface Props {
@@ -28,8 +29,8 @@ export default class Uploader extends React.Component<Props, State> {
 
   private async upload(): Promise<void> {
     const { file, uploaded } = this.props;
-    //@ts-ignore
-    const path = window.location.pathname.replace("/app", "") || "/";
+
+    const path = pathFromBrowser();
 
     const form: FormData = new FormData();
     form.set("files", file);

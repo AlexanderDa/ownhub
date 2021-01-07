@@ -1,4 +1,5 @@
 import React from "https://esm.sh/react@17.0.1";
+import { recordHistory } from "../utils/browser.ts";
 import Icon from "./Icon.tsx";
 
 interface Props {
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const { path } = props;
+  const { path, onChangePath } = props;
 
   const directories = (): Array<string> => {
     let directories: Array<string> = [];
@@ -20,9 +21,8 @@ export default (props: Props) => {
   };
 
   const handleFolder = (path: string) => {
-    //@ts-ignore
-    window.history.pushState({ dir: path }, path, `/app${path}`);
-    props.onChangePath(path);
+    recordHistory(path);
+    onChangePath(path);
   };
 
   return (
